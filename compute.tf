@@ -1,6 +1,7 @@
 resource "google_compute_instance" "chien" {
   name         = "chien"
   machine_type = "f1-micro"
+  zone         = "us-east1-c"
   tags         = ["public"]
 
   boot_disk {
