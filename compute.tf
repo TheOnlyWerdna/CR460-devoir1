@@ -33,3 +33,70 @@ resource "google_compute_health_check" "http-health-check" {
     port = 80
   }
 }
+
+resource "google_compute_instance" "chat" {
+  name         = "chat"
+  machine_type = "f1-micro"
+  zone         = "us-east1-c"
+  tags         = ["interne"]
+
+  boot_disk {
+    initialize_params {
+      image = "fedora-coreos-cloud/fedora-coreos-stable"
+    }
+  }
+
+  network_interface {
+    subnetwork = google_compute_subnetwork.prod-interne.name
+    access_config {
+
+    }
+  }
+}
+
+resource "google_compute_instance" "hamster" {
+  name         = "hamster"
+  machine_type = "f1-micro"
+  zone         = "us-east1-c"
+  tags         = ["traitement"]
+
+  boot_disk {
+    initialize_params {
+      image = "fedora-coreos-cloud/fedora-coreos-stable"
+    }
+  }
+
+  network_interface {
+    subnetwork = google_compute_subnetwork.prod-traitement.name
+    access_config {
+
+    }
+  }
+}
+# 
+# resource "google_compute_instance_group_manager" "devoir1-workload-gm" {
+#   name        = "devoir1-workload-gm"
+#   base_instance_name = "worker"
+#   version {
+#     instance_template  = google_compute_instance_template.devoir1-worker-template.self_link
+#     name               = "primary"
+#   }
+#   zone               = "us-east1-c"
+#
+# }
+#
+# resource "google_compute_autoscaler" "devoir1-autoscaler" {
+#   name   = "devoir1-autoscaler"
+#   zone   = "us-east1-c"
+#   target = google_compute_instance_group_manager.devoir1-workload-gm.self_link
+#
+#   autoscaling_policy {
+#     max_replicas    = 5
+#     min_replicas    = 1
+#     cooldown_period = 180
+#
+#     cpu_utilization {
+#       target = 0.53
+#     }
+#   }
+# }
