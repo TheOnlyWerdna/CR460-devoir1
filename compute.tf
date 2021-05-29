@@ -1,4 +1,4 @@
-resource "google_compute_instance" "instance1" {
+resource "google_compute_instance" "chien" {
   name         = "chien"
   machine_type = "f1-micro"
   tags         = ["public"]
@@ -10,7 +10,7 @@ resource "google_compute_instance" "instance1" {
   }
 
   network_interface {
-    subnetwork = "prod-dmz"
+    subnetwork = google_compute_subnetwork.prod-dmz.name
     access_config {
 
     }
@@ -32,23 +32,3 @@ resource "google_compute_health_check" "http-health-check" {
     port = 80
   }
 }
-
-# resource "google_compute_instance" "chat" {
-#   name         = "chat"
-#   machine_type = "f1-micro"
-#   zone         = "us-east1-c"
-#   tags         = ["public"]
-#
-#   boot_disk {
-#     initialize_params {
-#       image = "debian-cloud/debian-10"
-#     }
-#   }
-#
-#   network_interface {
-#     subnetwork = google_compute_subnetwork.mtl-dmz.name
-#     access_config {
-#
-#     }
-#   }
-# }
