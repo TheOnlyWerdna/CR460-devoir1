@@ -124,22 +124,22 @@ resource "google_compute_autoscaler" "devoir1-autoscaler" {
   }
 }
 
-# resource "google_compute_instance" "perroquet" {
-#   name         = "perroquet"
-#   machine_type = "f1-micro"
-#   zone         = var.zone
-#   tags         = ["cage"]
-#
-#   boot_disk {
-#     initialize_params {
-#       image = "ubuntu-os-cloud/ubuntu-2004-lts"
-#     }
-#   }
-#
-#   network_interface {
-#     network = google_compute_network.devoir1.name
-#     access_config {
-#
-#     }
-#   }
-# }
+resource "google_compute_instance" "perroquet" {
+  name         = "perroquet"
+  machine_type = "f1-micro"
+  zone         = var.zone
+  tags         = ["cage"]
+
+  boot_disk {
+    initialize_params {
+      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+    }
+  }
+
+  network_interface {
+    network = data.google_compute_network.default-network.name
+    access_config {
+
+    }
+  }
+}
