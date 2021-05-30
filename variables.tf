@@ -10,5 +10,5 @@ variable "zone"{
 
 variable "default_network_name" {
   type = string
-  default = "devoir1"
+  default = "default"
 }

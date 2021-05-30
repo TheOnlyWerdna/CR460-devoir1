@@ -1,5 +1,5 @@
 resource "google_compute_network" "devoir1" {
-  name                    = var.default_network_name
+  name                    = "devoir1"
   auto_create_subnetworks = "false"
 }
 
@@ -30,7 +30,7 @@ resource "google_compute_firewall" "allow-http" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80","22"]
+    ports    = ["80"]
   }
   target_tags=["http-server"]
 }
