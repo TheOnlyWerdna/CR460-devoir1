@@ -137,11 +137,9 @@ resource "google_compute_autoscaler" "devoir1-autoscaler" {
 #   }
 #
 #   network_interface {
-#     network = data.google_compute_network.devoir1.name
+#     network = google_compute_network.devoir1.name
 #     access_config {
 #
 #     }
 #   }
-#
-#   metadata_startup_script = "apt-get -y update && apt-get -y upgrade && apt-get -y install apache2 && systemctl start apache2"
 # }
