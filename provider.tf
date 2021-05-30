@@ -1,6 +1,6 @@
 provider "google" {
-  project = "cr460project"
+  project = var.project_id
   credentials = "account.json"
-  region  = "us-central1"
-  zone    = "us-central1-c"
+  region  = "us-east1"
+  zone    = var.zone
 }

@@ -1,5 +1,5 @@
 resource "google_compute_network" "devoir1" {
-  name                    = "devoir1"
+  name                    = var.default_network_name
   auto_create_subnetworks = "false"
 }
 
