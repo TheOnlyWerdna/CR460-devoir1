@@ -23,27 +23,27 @@ resource "google_compute_subnetwork" "prod-traitement" {
   region        = "us-east1"
   network       = google_compute_network.devoir1.self_link
 }
-#
-# resource "google_compute_firewall" "web-public" {
-#   name    = "web-public"
-#   network = google_compute_network.devoir1.name
-#   allow {
-#     protocol = "tcp"
-#     ports    = ["80", "443"]
-#   }
-#   target_tags=["public-web"]
-# }
-#
-# resource "google_compute_firewall" "traitement" {
-#   name    = "traitement"
-#   network = google_compute_network.devoir1.name
-#   allow {
-#     protocol = "tcp"
-#     ports    = ["4444", "5126"]
-#   }
-#   target_tags=["traitement"]
-# }
-#
+
+resource "google_compute_firewall" "public-web" {
+  name    = "public-web"
+  network = google_compute_network.devoir1.name
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+  target_tags=["public-web"]
+}
+
+resource "google_compute_firewall" "traitement" {
+  name    = "traitement"
+  network = google_compute_network.devoir1.name
+  allow {
+    protocol = "tcp"
+    ports    = ["4444", "5126"]
+  }
+  target_tags=["traitement"]
+}
+
 resource "google_compute_firewall" "ssh-public" {
   name    = "ssh-public"
   network = google_compute_network.devoir1.name

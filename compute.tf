@@ -73,30 +73,75 @@ resource "google_compute_instance" "hamster" {
     }
   }
 }
-# 
-# resource "google_compute_instance_group_manager" "devoir1-workload-gm" {
-#   name        = "devoir1-workload-gm"
-#   base_instance_name = "worker"
-#   version {
-#     instance_template  = google_compute_instance_template.devoir1-worker-template.self_link
-#     name               = "primary"
-#   }
-#   zone               = "us-east1-c"
+
+resource "google_compute_instance_template" "devoir1-workload-template" {
+  name                 = "devoir1-workload-template"
+  tags                 = ["workload"]
+  machine_type         = "n1-standard-1"
+  region               = "us-east1"
+  can_ip_forward       = true
+
+  // Create a new boot disk from an image
+  disk {
+    source_image = "fedora-coreos-cloud/fedora-coreos-stable"
+    auto_delete = true
+    boot = false
+  }
+
+  network_interface {
+    subnetwork = google_compute_subnetwork.prod-traitement.name
+    access_config {
+
+    }
+  }
+
+}
+
+resource "google_compute_instance_group_manager" "devoir1-workload-gm" {
+  name        = "devoir1-workload-gm"
+  base_instance_name = "worker"
+  version {
+    instance_template  = google_compute_instance_template.devoir1-workload-template.self_link
+    name               = "primary"
+  }
+  zone               = "us-east1-c"
+
+}
+
+resource "google_compute_autoscaler" "devoir1-autoscaler" {
+  name   = "devoir1-autoscaler"
+  zone   = "us-east1-c"
+  target = google_compute_instance_group_manager.devoir1-workload-gm.self_link
+
+  autoscaling_policy {
+    max_replicas    = 5
+    min_replicas    = 1
+    cooldown_period = 180
+
+    cpu_utilization {
+      target = 0.53
+    }
+  }
+}
+
+# resource "google_compute_instance" "perroquet" {
+#   name         = "perroquet"
+#   machine_type = "f1-micro"
+#   zone         = "us-east1-c"
+#   tags         = ["cage"]
 #
-# }
-#
-# resource "google_compute_autoscaler" "devoir1-autoscaler" {
-#   name   = "devoir1-autoscaler"
-#   zone   = "us-east1-c"
-#   target = google_compute_instance_group_manager.devoir1-workload-gm.self_link
-#
-#   autoscaling_policy {
-#     max_replicas    = 5
-#     min_replicas    = 1
-#     cooldown_period = 180
-#
-#     cpu_utilization {
-#       target = 0.53
+#   boot_disk {
+#     initialize_params {
+#       image = "ubuntu-os-cloud/ubuntu-2004-lts"
 #     }
 #   }
+#
+#   network_interface {
+#     network = data.google_compute_network.devoir1.name
+#     access_config {
+#
+#     }
+#   }
+#
+#   metadata_startup_script = "apt-get -y update && apt-get -y upgrade && apt-get -y install apache2 && systemctl start apache2"
 # }
