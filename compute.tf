@@ -2,7 +2,7 @@ resource "google_compute_instance" "chien" {
   name         = "chien"
   machine_type = "f1-micro"
   zone         = var.zone
-  tags         = ["http-server", "https-server"]
+  tags         = ["public-web"]
 
   boot_disk {
     initialize_params {
@@ -17,7 +17,7 @@ resource "google_compute_instance" "chien" {
     }
   }
 
-  metadata_startup_script = "sudo apt-get -y update && apt-get -y upgrade && apt-get -y install apache2 && systemctl start apache2"
+  metadata_startup_script = "apt-get -y update && apt-get -y upgrade && apt-get -y install apache2 && systemctl start apache2"
 }
 
 resource "google_compute_health_check" "http-health-check" {
@@ -138,8 +138,5 @@ resource "google_compute_instance" "perroquet" {
 
   network_interface {
     network = data.google_compute_network.default-network.name
-    access_config {
-
-    }
   }
 }

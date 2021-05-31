@@ -24,17 +24,6 @@ resource "google_compute_subnetwork" "prod-traitement" {
   network       = google_compute_network.devoir1.self_link
 }
 
-resource "google_compute_firewall" "allow-http" {
-  name    = "allow-http"
-  network = google_compute_network.devoir1.name
-
-  allow {
-    protocol = "tcp"
-    ports    = ["80"]
-  }
-  target_tags=["http-server"]
-}
-
 resource "google_compute_firewall" "firewall-public-web" {
   name    = "firewall-public-web"
   network = google_compute_network.devoir1.name
@@ -54,7 +43,7 @@ resource "google_compute_firewall" "firewall-prod-interne" {
     ports    = ["4444", "5126"]
   }
 
-  target_tags = ["traitement"]
+  target_tags = ["traitement","interne"]
   source_tags = ["prod-interne"]
 }
 
