@@ -1,3 +1,14 @@
+#Notez bien:
+Les systèmes d'exploitations pour les instances étaient vielles, donc cela créeait possiblement un risque de sécurité. Alors, j'ai mis des versions plus récentes et plus sécuritaires.
+
+Le health check a été crée, car il a été demandé, mais il n'est pas trop utile selon notre rencontre avec Mathieu Bilodeau.
+
+Compte "Viewer" Maison non fonctionnel, donc mis en commentaire.
+
+Les sources pour le projet sont: documentation terraform, documentation GCP et les repos de Mathieu Bilodeau.
+
+
+
 # Devoir 1
 ## Énoncé
 
